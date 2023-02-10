@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GENERATE RANDOM JAM</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            background: rgb(2,0,36);
+            background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+            background: linear-gradient(270deg, #5a90ea, #5a63ea, #2d39ec);
+            background-size: 600% 600%;
+
+            -webkit-animation: AnimationName 30s ease infinite;
+            -moz-animation: AnimationName 30s ease infinite;
+            animation: AnimationName 30s ease infinite;
+            color: #fff;
+        }
+        .wraper{
+            max-width: 100%;
+            overflow: auto;
+            height: 550px;
+            border: 3px double;
+        }
+        button#btn {
+            display: block;
+            width: 100%;
+            border: none;
+            padding: 5px;
+            background: #03A9F4;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        #btn:hover {
+            background-color: #1d88b9;
+        }
+        th {
+            /* position: sticky; */
+            /* top: 0; */
+            background: #19ff23;
+            padding: 2px;
+            box-shadow: 3px 2px 7px 0px black;
+            color: #150100;
+        }
+        table#utama {
+            background: #607D8B;
+            text-align: left;
+            padding: 5px;
+        }
+        table#utama td,table#utama th {
+            font-size: 14px;
+            color: #fff;
+        }
+        table {
+            box-shadow: 1px 1px 11px 1px #ababab;font-size: 11px;
+            color: #000;
+        }
+        .wr {
+            position: relative;
+            width: 100%;
+            padding: 40px;
+            text-align: center;
+            box-sizing: border-box;
+        }
+        @-webkit-keyframes AnimationName {
+            0%{background-position:0% 51%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 51%}
+        }
+        @-moz-keyframes AnimationName {
+            0%{background-position:0% 51%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 51%}
+        }
+        @keyframes AnimationName {
+            0%{background-position:0% 51%}
+            50%{background-position:100% 50%}
+            100%{background-position:0% 51%}
+        }
+        th {
+            position: sticky;
+            top: 0;
+        }
+        button#btnExport {
+            background: #03A9F4;
+            border: none;
+            padding: 10px;
+            margin: 10px 10px 10px 0px;
+            font-family: system-ui;
+            font-weight: bold;
+            color: #fff;
+            border-radius: 5px;
+            box-shadow: 3px 2px 4px 0px #3c3c3c;
+            cursor: pointer;
+            display: none;
+        }
+        button#btnExport:hover {
+            background-color: #2095ca;
+        }
+        .wr-btn {
+            position: relative;
+            width: 100%;
+            text-align: center;
+        }
+        .active {
+            display: inline-block!important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="container">
+        <marquee behavior="scroll" style="max-width: 100%;" direction="right"><h1 style="text-align: center;display: inline-block;">BUAT ABSEN OTOMATIS</h1></marquee>
+        <div class="wr">
+            <table style="margin-bottom: 30px;" id="utama">
+                <tr>
+                    <td>PILIH BULAN</td>
+                    <td> : </td>
+                    <td><input type="month" id="tanggal"></td>
+                </tr>
+                <tr>
+                    <td>JUMLAH GURU</td>
+                    <td> : </td>
+                    <td><input type="number" name="jumlahGuru" id="jumlahGuru"></td>
+                </tr>
+                <tr>
+                    <td colspan="3" style="text-align: center;padding: 4px;">
+                        <button id="btn">BUAT ABSEN</button>
+                    </td>
+                </tr>
+            </table>
+            <H3>ABSENSI FINGER BULAN : <b id="pickBulan"></b></H3>
+        </div>
+        <div class="wr-btn">
+            <button id="btnExport" onclick="fnExcelReport();"> EXPORT EXCEL </button>
+        </div>
+        <div class="wraper">
+            <table border="1" style="border-collapse: collapse;" id="tableData">
+                <thead>
+                    <tr id="headTable">
+                        
+                    </tr>
+                    <tr id="inOut"></tr>
+                </thead>
+                <tbody id="dataTable">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <iframe id="txtArea1" style="display:none"></iframe>
+    <!-- <audio controls autoplay>
+        <source src="music.mp3" type="audio/mpeg">
+        Browser anda tidak mendukung pemutaran audio
+    </audio> -->
+
+    <script src="script.js"></script>
+</body>
+</html>
