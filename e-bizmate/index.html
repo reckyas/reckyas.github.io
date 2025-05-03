@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>e-BizMate</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom right, #8B0000, #CD5C5C);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wrapper {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 0 20px 0;
+      color: white;
+    }
+
+    .header h2 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .header img {
+      height: 70px;
+    }
+
+    .card {
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 20px;
+      padding: 25px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+
+    label {
+      margin-top: 15px;
+      display: block;
+      font-weight: bold;
+      font-size: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      box-sizing: border-box;
+    }
+
+    button {
+      margin-top: 25px;
+      width: 100%;
+      background: #00cba9;
+      color: white;
+      font-weight: bold;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #009f85;
+    }
+
+    .results {
+      margin-top: 25px;
+      padding: 15px;
+      border-radius: 12px;
+      background: #e9f7ef;
+      font-size: 14px;
+    }
+
+    .results.rugi {
+      background: #ffdddd;
+    }
+
+    .result-item {
+      margin-bottom: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="header">
+      <h2>e-BizMate</h2>
+      <img src="https://cdn-icons-png.flaticon.com/512/2436/2436635.png" alt="Ilustrasi" />
+    </div>
+
+    <div class="card">
+      <label>Total Investasi (Rp)</label>
+      <input type="text" id="investasi" oninput="formatRupiah(this)">
+
+      <label>Total Biaya Produksi (Rp)</label>
+      <input type="text" id="biayaProduksi" oninput="formatRupiah(this)">
+
+      <label>Jumlah Produksi (Unit)</label>
+      <input type="number" id="jumlahProduksi">
+
+      <label>Harga Jual per Unit (Rp)</label>
+      <input type="text" id="hargaJual" oninput="formatRupiah(this)">
+
+      <button onclick="hitung()">Hitung</button>
+
+      <div class="results" id="hasil">
+        <!-- Hasil akan tampil di sini -->
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatRupiah(input) {
+      let value = input.value.replace(/[^0-9]/g, "");
+      input.value = new Intl.NumberFormat("id-ID").format(value);
+    }
+
+    function parseRupiah(str) {
+      return parseFloat(str.replace(/\./g, "").replace(",", "")) || 0;
+    }
+
+    function hitung() {
+      const investasi = parseRupiah(document.getElementById("investasi").value);
+      const biayaProduksi = parseRupiah(document.getElementById("biayaProduksi").value);
+      const jumlahProduksi = parseFloat(document.getElementById("jumlahProduksi").value);
+      const hargaJual = parseRupiah(document.getElementById("hargaJual").value);
+
+      if (!investasi || !biayaProduksi || !jumlahProduksi || !hargaJual) {
+        alert("Harap isi semua input dengan benar!");
+        return;
+      }
+
+      const totalPendapatan = jumlahProduksi * hargaJual;
+      const laba = totalPendapatan - biayaProduksi;
+      const bepHarga = biayaProduksi / jumlahProduksi;
+      const bepProduksi = biayaProduksi / hargaJual;
+      const roi = (laba / investasi) * 100;
+
+      let pp;
+      if (laba <= 0) {
+        pp = "Tidak balik modal";
+      } else {
+        const ppValue = investasi / laba;
+        const tahun = Math.floor(ppValue);
+        const bulan = Math.round((ppValue - tahun) * 12);
+        if (tahun === 0) {
+          pp = `${bulan} bulan`;
+        } else if (bulan === 0) {
+          pp = `${tahun} tahun`;
+        } else {
+          pp = `${tahun} tahun lebih ${bulan} bulan`;
+        }
+      }
+
+      const hasilDiv = document.getElementById("hasil");
+      hasilDiv.className = "results" + (laba < 0 ? " rugi" : "");
+
+      hasilDiv.innerHTML = `
+        <div class="result-item"><strong>Total Pendapatan:</strong> Rp ${totalPendapatan.toLocaleString("id-ID")}</div>
+        <div class="result-item"><strong>Laba/Rugi:</strong> Rp ${laba.toLocaleString("id-ID")} (${laba < 0 ? "Rugi" : "Laba"})</div>
+        <div class="result-item"><strong>BEP Harga:</strong> Rp ${bepHarga.toFixed(2)} / unit</div>
+        <div class="result-item"><strong>BEP Produksi:</strong> ${bepProduksi.toFixed(2)} unit</div>
+        <div class="result-item"><strong>ROI:</strong> ${roi.toFixed(2)}%</div>
+        <div class="result-item"><strong>Payback Period:</strong> ${pp}</div>
+      `;
+    }
+  </script>
+</body>
+</html>
